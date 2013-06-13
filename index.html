@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<head>
+<title>Mariages</title>
+<style>
+
+#about {
+    position: absolute;
+    color: #333;
+    z-index: 420000;
+    cursor: default;
+	top: 10px;
+	right: 20px;
+	text-align: left;
+}
+
+#about .button {
+	padding: 3px;
+    position: absolute;
+	right: 20px;
+	width: 100px;
+	text-align: right;
+}
+
+#about div {
+    overflow: hidden;
+    height: 0;
+    background: #fff;
+    width: 0;
+}
+
+#about .help {
+    color: black;
+    font-style: italic;
+}
+
+#about a[href^=mailto] {
+    font-size: 75%;
+}
+
+#about:hover a {
+    color: black;
+}
+
+#about:hover div {
+    width: 400px;
+    height: auto;
+    border: 1px solid #666;
+    padding: 0.5ex 1em;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+}
+
+body {
+	margin: 10px 20px;
+	font-family: "Lucida Grande", "Helvetica", "Arial", sans-serif;
+	font-size: 14px;
+}
+
+#legende {
+	right: 20px;
+	background: rgba(255, 255, 255, 0.5);
+}
+
+#legende h1, #legende h2{
+	display: inline;
+}
+
+#legende form ul {
+	margin: 0;
+}
+
+h1 {
+	margin: 0;
+}
+
+h2 {
+	margin: 5px;
+}
+
+.legende {
+	cursor: pointer;
+}
+
+svg {
+	position: absolute;
+	top: 90px;
+	left: 10px;
+	z-index: -1;
+}
+
+.country {
+	fill: white;
+	stroke: #777;
+	stroke-width: 1px;
+	shape-rendering: optimizeSpeed;
+	transition: 0.5s 0.75s opacity ease;
+}
+
+.country.faded {
+	opacity: 0.2;
+}
+
+.country.FRA,
+.country.ATF,
+.country.NCL {
+/*	fill: #4F4 !important; */
+	fill: url(#france-gradient) !important;
+}
+
+.coastline {
+	fill: transparent;
+	stroke: #CCF;
+	stroke-width: 5px;
+	shape-rendering: optimizeSpeed;
+	transition: 0.5s 0.75s opacity ease;
+}
+
+.coastline.faded {
+	opacity: 0.2;
+}
+
+#legend {
+	vertical-align: middle;
+	position: relative;
+	right: 20px;
+}
+
+#scale {
+	border: 1px solid white;
+}
+
+#scale.hf {
+	vertical-align: middle;
+	display: inline-block;
+	width: 200px;
+	height: 20px;
+	background: rgb(255,71,71); /* Old browsers */
+	background: -moz-linear-gradient(left,  rgba(255,71,71,1) 0%, rgba(83,85,224,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,71,71,1)), color-stop(100%,rgba(83,85,224,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(255,71,71,1) 0%,rgba(83,85,224,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(255,71,71,1) 0%,rgba(83,85,224,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(255,71,71,1) 0%,rgba(83,85,224,1) 100%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(255,71,71,1) 0%,rgba(83,85,224,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff4747', endColorstr='#5355e0',GradientType=1 ); /* IE6-9 */
+}
+
+#scale.f {
+	vertical-align: middle;
+	display: inline-block;
+	width: 200px;
+	height: 20px;
+	background: rgb(255,71,71); /* Old browsers */
+	background: -moz-linear-gradient(left,  rgba(255,71,71,1) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,71,71,1)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(255,71,71,1) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(255,71,71,1) 0%,rgba(255,255,255,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(255,71,71,1) 0%,rgba(255,255,255,1) 100%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(255,71,71,1) 0%,rgba(255,255,255,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff4747', endColorstr='#ffffff',GradientType=1 ); /* IE6-9 */
+}
+
+#scale.h {
+	vertical-align: middle;
+	display: inline-block;
+	width: 200px;
+	height: 20px;
+	background: rgb(255,71,71); /* Old browsers */
+	background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(83,85,224,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(83,85,224,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(83,85,224,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(83,85,224,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(left,  rgba(255,255,255,1) 0%,rgba(83,85,224,1) 100%); /* IE10+ */
+	background: linear-gradient(to right,  rgba(255,255,255,1) 0%,rgba(83,85,224,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#5355e0',GradientType=1 ); /* IE6-9 */
+}
+
+#scale.n {
+	vertical-align: middle;
+	display: inline-block;
+	width: 200px;
+	height: 20px;
+	background: rgb(255,71,71); /* Old browsers */
+	background: -moz-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%,  rgba(85,85,85,1) 50.1%, rgba(85,85,85,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(50%,rgba(255,255,255,1)), color-stop(50.1%,rgba(85,85,85,1)), color-stop(100%,rgba(85,85,85,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%,  rgba(85,85,85,1) 50.1%, rgba(85,85,85,1) 100%); /* FF3.6+ */
+	background: -o-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%,  rgba(85,85,85,1) 50.1%, rgba(85,85,85,1) 100%); /* FF3.6+ */
+	background: -ms-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%,  rgba(85,85,85,1) 50.1%, rgba(85,85,85,1) 100%); /* FF3.6+ */
+	background: linear-linear-gradient(left,  rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%,  rgba(85,85,85,1) 50.1%, rgba(85,85,85,1) 100%); /* FF3.6+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#5355e0',GradientType=1 ); /* IE6-9 */
+	border: 1px solid lightgrey;
+}
+
+#right, #left {
+	display: inline-block;
+}
+
+#right {text-align: left; width: 100px;}
+#left {text-align: right; width: 150px;}
+
+form {
+	position: relative;
+	top: 10px;
+}
+
+li {
+	list-style-type: none;
+}
+
+form li input {
+	vertical-align: middle;
+}
+
+.layer {
+	stroke: white;
+	stroke-width: 1px;
+	opacity: 0.1;
+	transition: opacity ease 0.250s;
+}
+
+.layer:hover, .layer.selected {
+	opacity: 1;
+}
+
+</style>
+</head>
+<body>
+<div id="about">
+	<a class="button">À propos</a>
+	<div lang="en">
+		<p>Nationalité des épouses et époux étrangers mariés à une ou un Français.
+		Les couleurs des pays indiquent la quantité et le ratio hommes/femmes pour l'année 2011.</p>
+		<p>Le graphique en arrière-plan indique l'évolution de nombre de mariages
+		et du ratio hommes/femmes depuis 2006 (plus anciennes statistiques disponibles), regroupées
+		par continent pour les pays dont peu de ressortissants se sont mariés en France.</p>
+		<p>Données fournies par l'<a href="http://www.insee.fr/fr/themes/detail.asp?ref_id=ir-sd20062">INSEE</a>.
+		<p><a href="mailto:see@seos.fr">Contact</a></p>
+	</div>
+</div>
+<div id="legende">
+	<h1>Mariages mixtes en France</h1>
+	<h2>par pays de naissance de l'époux étranger</h2>
+	<div id="legend"><span id="left">plus de femmes</span> <span id="scale" class="hf"></span> <span id="right">plus d'hommes</span></div>
+	<form>
+		<ul>
+			<li><input type="checkbox" name="hommes" id="hommes" checked="checked" /> <label for="hommes">hommes</label></li>
+			<li><input type="checkbox" name="femmes" id="femmes" checked="checked" /> <label for="femmes">femmes</label></li>
+		</ul>
+	</form>
+</div>
+<script src="d3.v3.min.js"></script>
+<script src="queue.v1.min.js"></script>
+<script src="http://d3js.org/d3.geo.polyhedron.v0.min.js"></script>
+<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="protovis_dymaxion.js"></script>
+<script src="d3_dymaxion.js"></script>
+<script src="topojson.v1.js"></script>
+<script>
+
+queue()
+	.defer(d3.json, "borders.json")
+	.defer(d3.tsv, "mariages.tsv")
+	.await(function(error, borders, stats) {
+		var width = window.innerWidth - 15,
+			height = window.innerHeight - 100;
+
+		var projection = d3.geo.polyhedron.dymaxion()
+			.scale(250 * Math.min(width/1500, height/750))
+			.translate([width/3, 50])
+
+		var path = d3.geo.path()
+			.projection(projection);
+
+		var graticule = d3.geo.graticule();
+
+		var svg = d3.select("body").append("svg")
+			.attr("width", width)
+			.attr("height", height);
+
+		var stats2011 = stats.filter(function(d) { return d.annee == '2011'; });
+
+		var countries = topojson.feature(borders, borders.objects.ne_110m_admin_0_countries).features;
+		var s = d3.map();
+		stats2011.forEach(function(d) {
+			s.set(d.code, d);
+		});
+
+		var n_max = 0;
+		var f_max = 0;
+		var h_max = 0;
+		countries.forEach(function(d) {
+			if (s.has(d.id)) {
+				var stats = s.get(d.id);
+				d.femmes = +stats.femmes_fr;
+				d.hommes = +stats.hommes_fr;
+
+				d.pays = stats.pays;
+				d.continent = stats.continent;
+
+				f_max = Math.max(f_max, d.femmes);
+				h_max = Math.max(h_max, d.hommes);
+
+				n_max = Math.max(n_max, d.femmes);
+				n_max = Math.max(n_max, d.hommes);
+			} else {
+				d.femmes = 0;
+				d.hommes = 0;
+			}
+		});
+
+		stats.forEach(function(d) {
+			d.femmes = +d.femmes;
+			d.hommes = +d.hommes;
+
+			f_max = Math.max(f_max, d.femmes);
+			h_max = Math.max(h_max, d.hommes);
+
+			n_max = Math.max(n_max, d.femmes);
+			n_max = Math.max(n_max, d.hommes);
+		});
+
+		var color_f = d3.scale.pow()
+			.exponent(0.25)
+			.range(['white', 'red'])
+			.domain([1, n_max]);
+
+		var color_h = d3.scale.pow()
+			.exponent(0.25)
+			.range(['white', 'blue'])
+			.domain([1, n_max]);
+
+		var color_ratio = function(d) {
+			d.hommes = +d.hommes;
+			d.femmes = +d.femmes;
+
+			if (d.hommes + d.femmes == 0) {
+				return '#555';
+			}
+
+			var f = d3.mean([d.f_min, d.f_max]);
+			var h = d3.mean([d.h_min, d.h_max]);
+
+			if (d.hommes > d.femmes) {
+				var p = d.femmes/d.hommes/2;
+
+				// Bring out the more outlying values.
+				if (d.hommes > h) {
+					p = p/2;
+				} else if (d.femmes > f) {
+					p = p*2;
+				}
+				return d3.interpolateLab(color_h(h_max), color_f(f_max))(p);
+			} else {
+				var p = d.hommes/d.femmes/2;
+				if (d.femmes > f) {
+					p = p/2;
+				} else if (d.hommes > h) {
+					p = p*2;
+				}
+				return d3.interpolateLab(color_f(f_max), color_h(h_max))(p);
+			}
+		};
+
+		var color_ratio_f = function(d) {
+			d.hommes = +d.hommes;
+			d.femmes = +d.femmes;
+
+			if (d.hommes + d.femmes == 0) {
+				return '#555';
+			}
+
+			var f = d3.mean([d.f_min, d.f_max]);
+			var h = d3.mean([d.h_min, d.h_max]);
+
+			if (d.hommes > d.femmes) {
+				var p = d.femmes/d.hommes/2;
+				if (d.hommes > h) {
+					p = p/2;
+				} else if (d.femmes > f) {
+					p = p*2;
+				}
+				return d3.interpolateLab('white', color_f(f_max))(p);
+			} else {
+				var p = d.hommes/d.femmes/2;
+				if (d.femmes > f) {
+					p = p/2;
+				} else if (d.hommes > h) {
+					p = p*2;
+				}
+				return d3.interpolateLab(color_f(f_max), 'white')(p);
+			}
+		};
+
+		var color_ratio_h = function(d) {
+			d.hommes = +d.hommes;
+			d.femmes = +d.femmes;
+
+			if (d.hommes + d.femmes == 0) {
+				return '#555';
+			}
+
+			var f = d3.mean([d.f_min, d.f_max]);
+			var h = d3.mean([d.h_min, d.h_max]);
+
+			if (d.hommes > d.femmes) {
+				var p = d.femmes/d.hommes/2;
+				if (d.hommes > h) {
+					p = p/2;
+				} else if (d.femmes > f) {
+					p = p*2;
+				}
+				return d3.interpolateLab(color_h(h_max), 'white')(p);
+			} else {
+				var p = d.hommes/d.femmes/2;
+				if (d.femmes > f) {
+					p = p/2;
+				} else if (d.hommes > h) {
+					p = p*2;
+				}
+				return d3.interpolateLab('white', color_h(h_max))(p);
+			}
+		};
+
+		var color_tous = function(d) {
+			d.hommes = +d.hommes;
+			d.femmes = +d.femmes;
+
+			if (d.hommes + d.femmes == 0) {
+				return '#555';
+			}
+
+			if (d.hommes > d.femmes) {
+				var p = d.femmes/d.hommes/2;
+				return d3.interpolateLab(color_h(d.hommes+1), color_f(d.femmes+1))(p);
+			} else {
+				var p = d.hommes/d.femmes/2;
+				return d3.interpolateLab(color_h(d.hommes+1), color_f(d.femmes+1))(1 - p);
+			}
+		};
+
+		var color_femmes = function(d) {
+			if (d.hommes + d.femmes == 0) {
+				return '#555';
+			}
+
+			return color_f(d.femmes+1);
+		};
+
+		var color_hommes = function(d) {
+			if (d.hommes + d.femmes == 0) {
+				return '#555';
+			}
+
+			return color_h(d.hommes+1);
+		};
+
+		var color_none = function(d) {
+			if (d.hommes + d.femmes == 0) {
+				return '#555';
+			}
+
+			return 'white';
+		};
+
+
+        var stack = d3.layout.stack()
+            .offset("zero")
+            .values(function(d) {return d.values})
+            .x(function(d) { return +d.annee; })
+            .y(function(d) { return (+d.femmes) + (+d.hommes); });
+
+        var x = d3.scale.linear()
+            .domain([2006, 2011])
+            .range([50, width - 50]);
+
+        var y = d3.scale.linear()
+            .domain([0, 57000])
+            .range([height - 25, 25]);
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .tickFormat(function(d) {return d3.format('d')(d)});
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .orient("bottom")
+            .tickFormat(function(d) {return d3.format('d')(d)});
+
+        var nest = d3.nest()
+            .key(function(d) { return d.code; })
+			.entries(stats);
+
+		var years = d3.map();
+		stats.forEach(function(d) {
+			years.set(d.annee, d.annee);
+		});
+		years = years.keys();
+
+		var groups = d3.map();
+		nest.forEach(function(d) {
+			if (d.key.length != 3) {
+				groups.set(d.key, d);
+			}
+		});
+
+		nest.forEach(function(d) {
+			d.title = d.values[0].pays;
+			d.continent = d.values[0].continent;
+
+			if (d.values.length != years.length) {
+				var has = {};
+				d.values.forEach(function(v) {
+					has[v.annee] = v.annee;
+				});
+
+				years.forEach(function(annee) {
+					if (undefined == has[annee]) {
+						d.values.push({
+							annee: annee,
+							code: d.key,
+							femmes: 0,
+							femmes_fr: 0,
+							femmes_extra: 0,
+							hommes: 0,
+							hommes_fr: 0,
+							hommes_extra: 0
+						});
+					}
+				});
+			}
+
+			d.values.sort(function(a, b) {
+				return a.annee > b.annee ? 1 : -1;
+			});
+
+			d.f_max = d3.max(d.values.map(function(d) {return +d.femmes}));
+			d.f_min = d3.min(d.values.map(function(d) {return +d.femmes}));
+
+			d.h_max = d3.max(d.values.map(function(d) {return +d.hommes}));
+			d.h_min = d3.min(d.values.map(function(d) {return +d.hommes}));
+
+			if (d.f_max + d.h_max < 700 && d.key != d.continent) {
+				var c = groups.get(d.continent);
+
+				if (c) {
+					var v = d3.map();
+					d.values.forEach(function(y) {
+						v.set(y.annee, y);
+					});
+
+					c.values.forEach(function(y) {
+						y.femmes += v.get(y.annee).femmes;
+						y.hommes += v.get(y.annee).hommes;
+
+						y.f_max = Math.max(y.f_max, y.femmes);
+						y.h_max = Math.max(y.h_max, y.hommes);
+
+						y.f_min = Math.min(y.f_min, y.femmes);
+						y.h_min = Math.min(y.h_min, y.hommes);
+
+						v.get(y.annee).femmes = 0;
+						v.get(y.annee).hommes = 0;
+					});
+
+					d.remove = true;
+				}
+			}
+
+			d.values.forEach(function(v) {
+				v.f_max = d.f_max;
+				v.f_min = d.f_min;
+
+				v.h_max = d.h_max;
+				v.h_min = d.h_min;
+			});
+		});
+
+		nest = nest.filter(function(d) {return !d.remove;});
+
+		svg.selectAll(".country-gradient")
+			.data(nest).enter()
+			.append('linearGradient')
+				.attr("id", function(d) { return d.key + "-gradient"; })
+				.attr("class", "country-gradient")
+				.selectAll("stop")
+				.data(function(d) { return d.values; })
+				.enter().append("stop")
+					.attr("offset", function(d, i) { return Math.floor(i/(years.length-1) * 100) + '%'; })
+					.attr("class", "country-gradient-stop")
+					.attr("stop-color", color_ratio);
+
+        var layers = stack(nest);
+        var stream_color = d3.scale.linear()
+            .range(["#223", "#446"]);
+
+        var area = d3.svg.area()
+            .interpolate("basis")
+            .x(function(d) { return x(+d.annee); })
+            .y0(function(d) { return y(d.y0+1); })
+            .y1(function(d) { return y(d.y0 + d.y+1); });
+
+        svg.append("g").
+            selectAll("path")
+            .data(layers)
+            .enter().append("path")
+            .attr("class", function(d) { return "layer " + d.key; })
+            .attr("d", function(d) {return area(d.values)})
+            .style("fill", function(d) {return "url(#" + d.key + "-gradient)"})
+                .append('title').text(function(d) { return d.title; });
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + (height - 29) + ")")
+            .call(xAxis)
+            .append("text")
+                .attr("class", "label")
+                .attr("x", width/2)
+                .attr("y", 10)
+                .attr("dy", ".71em")
+                .style("text-anchor", "middle")
+                .text("Année");
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .attr("transform", "translate(50, 2)")
+            .call(yAxis)
+            .append("text")
+                .attr("class", "label")
+                .attr("transform", "rotate(-90)")
+                .attr("x", -height/2)
+                .attr("y", 2)
+                .attr("dy", ".71em")
+                .style("text-anchor", "middle")
+                .text("Nombre de mariages");
+
+
+		svg.append("linearGradient")
+			.attr("id", "france-gradient")
+			.attr("spreadMethod", "repeat")
+			.attr("gradientUnits", "userSpaceOnUse")
+			.attr("x1", 0)
+			.attr("x2", 8)
+			.attr("y1", 0)
+			.attr("y2", 0)
+			.selectAll("stop")
+			.data([
+				{offset: "0%", color: "royalblue"},
+				{offset: "35%", color: "royalblue"},
+				{offset: "35.1%", color: "white"},
+				{offset: "65%", color: "white"},
+				{offset: "65.1%", color: "red"},
+				{offset: "100%", color: "red"}
+			])
+			.enter().append("stop")
+				.attr("offset", function(d) { return d.offset; })
+				.attr("stop-color", function(d) { return d.color; });
+
+		svg.append("path")
+			.datum(topojson.mesh(borders, borders.objects.ne_110m_admin_0_countries, function(a, b) { return a === b; }))
+			.attr("class", "coastline")
+			.attr("d", path);
+
+
+		svg.selectAll(".country")
+			.data(countries)
+			.enter().append("path")
+			.attr("class", function(d) { return "country " + d.id; })
+			.attr("data-country-code", function(d) { return d.id; })
+			.attr("d", path)
+			.style("fill", color_tous)
+			.append("title").text(function(d) {
+				return (d.hommes+d.femmes > 0 ? d.pays + " :\n" : "") +
+				       d.hommes + " homme" + (d.hommes == 1 ? "" : "s") + "\n" +
+				       d.femmes + " femme" + (d.hommes == 1 ? "" : "s");
+		});
+
+		svg.selectAll(".country.FRA").select("title").text("Mariages en 2011 : 236 826")
+
+		svg.selectAll(".country").on("mouseover", function(d) {
+			var code = d.id;
+			var country = svg.selectAll(".layer." + code);
+			if (country[0].length > 0) {
+				country.classed("selected", true);
+			} else {
+				svg.selectAll(".layer." + d.continent).classed("selected", true);
+			}
+		});
+
+		svg.selectAll(".country").on("mouseout", function(d) {
+			svg.selectAll(".layer.selected").classed("selected", false);
+		});
+
+		svg.selectAll(".layer").on("mouseover", function(d) {
+			svg.selectAll(".country").classed("faded", true);
+			svg.selectAll(".coastline").classed("faded", true);
+		});
+
+		svg.selectAll(".layer").on("mouseout", function(d) {
+			svg.selectAll(".country").classed("faded", false);
+			svg.selectAll(".coastline").classed("faded", false);
+		});
+
+		d3.selectAll("input").on("change", function() {
+			var f = d3.select("#femmes").property("checked");
+			var h = d3.select("#hommes").property("checked");
+
+			var c = color_none;
+
+			if (f && h) {
+				c = color_tous;
+				c_ratio = color_ratio;
+				d3.select("#scale").attr("class", "hf");
+				d3.select("#left").text("plus de femmes");
+				d3.select("#right").text("plus d'hommes");
+			} else if (f) {
+				c = color_femmes;
+				c_ratio = color_ratio_f;
+				d3.select("#scale").attr("class", "f");
+				d3.select("#left").text(f_max + " femmes");
+				d3.select("#right").text("0 femmes");
+			} else if (h) {
+				c = color_hommes;
+				c_ratio = color_ratio_h;
+				d3.select("#scale").attr("class", "h");
+				d3.select("#left").text("0 hommes");
+				d3.select("#right").text(h_max + " hommes");
+			} else {
+				d3.select("#scale").attr("class", "n");
+				d3.select("#left").text("au moins un mariage");
+				d3.select("#right").text("aucun mariage");
+			}
+
+			svg.selectAll(".country")
+				.transition().duration(750)
+				.style("fill", c)
+
+			svg.selectAll(".country-gradient-stop")
+				.transition().duration(750)
+				.attr("stop-color", c_ratio);
+		});
+});
+
+</script>
+</body>
